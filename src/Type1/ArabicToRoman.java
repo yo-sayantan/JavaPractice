@@ -60,7 +60,7 @@ public class ArabicToRoman {
                         n += arabic[i];
                         ct=0;
                     }
-                    i=0;
+                    i=-1;
                 }
             }
         }

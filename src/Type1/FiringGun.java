@@ -7,7 +7,7 @@ public class FiringGun {
 	 public static void main(String args[]) throws InterruptedException {
 	        Scanner sc = new Scanner(System.in);
 	        int stock, magazine = 20, speed = 100, reloadTime = 3000;
-	        System.out.print("Ente magazine stock: ");
+	        System.out.print("Enter magazine stock: ");
 	        stock = sc.nextInt();
 	        
 	        while(stock-- > 1) {
@@ -15,6 +15,7 @@ public class FiringGun {
 	            reload(reloadTime);
 	        }
 	        fire(magazine, speed);
+	        System.out.println("Complete..");
 	        sc.close();
 	    }
 	    

@@ -70,7 +70,6 @@ public class NumberToEnglish {
 					ans = tensFirst[num%10];
 				break;
 		}
-		
 		return ans;
 	}
 

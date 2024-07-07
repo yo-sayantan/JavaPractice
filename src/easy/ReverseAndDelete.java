@@ -1,4 +1,4 @@
-package Type1;
+package easy;
 
 import java.util.Scanner;
 

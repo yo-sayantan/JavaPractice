@@ -1,4 +1,4 @@
-package Type1;
+package easy;
 
 import java.util.ArrayList;
 import java.util.List;

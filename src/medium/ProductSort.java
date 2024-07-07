@@ -1,7 +1,7 @@
 // Input: {3,5,6,4,5,4,4,2,2,2,8,8,7}
 // Output:{3,6,7,5,5,8,8,2,2,2,4,4,4}	
 
-package Type2;
+package medium;
 
 import java.util.ArrayList;
 import java.util.Arrays;

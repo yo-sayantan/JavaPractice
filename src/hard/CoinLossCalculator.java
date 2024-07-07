@@ -1,6 +1,8 @@
+package hard;
+
 import java.util.*;
-import java.lang.*;
-public class MyClass {
+
+public class CoinLossCalculator {
     private static double buy, sell, avgBuy, principal, target, invest=0;
     private static int option;
     private static Scanner sc = null;

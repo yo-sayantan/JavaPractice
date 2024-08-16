@@ -45,7 +45,7 @@ public class SchemeFilter {
 			mfObject = new MutualFund();
 			schemeCode = String.valueOf(object.getInt("schemeCode"));
 			schemeName = object.getString("schemeName");
-			nameErrorFix(schemeName);
+//			nameErrorFix(schemeName);
 			String[] nameArray = schemeName.split(" ");
 //			for(int i=0; i<nameArray.length; i++)
 //				nameArray[i] = StringUtils.capitalize(nameArray[i]);
@@ -58,13 +58,19 @@ public class SchemeFilter {
 			else
 				amcName = amc;
 			
-			amcName = (amcName.toUpperCase());
+			amcName = (amcName.toUpperCase()).trim();
 			mfObject.setSchemeCode(schemeCode);
 			mfObject.setSchemeName(schemeName);
 			mfObject.setAmcName(amcName);
-			mfObject.setInstrument((schemeName.contains("ETF") && !schemeName.contains("FOF")) ? "ETFs" : "Fund");
+			mfObject.setInstrument(((schemeName.contains("ETF") || schemeName.contains("Exchange Traded")) && !schemeName.contains("FOF")) ? "ETFs" : "Fund");
+			if(!set.contains(amcName)) {
+				System.out.println("\namc="+amc);
+				System.out.println("amcName="+amcName);
+				System.out.println("schemeName="+schemeName);
+				
+			}
 			set.add(amcName);
-			System.out.println("amcName="+amcName);
+			
 			schemeMap.put(schemeCode, mfObject);
 		}
 		System.out.println("HashSet="+set);
@@ -86,24 +92,24 @@ public class SchemeFilter {
 	private static String nameErrorFix(String schemeName) {
 //		schemeName = capitalize(schemeName);
 		String[] nameArray = schemeName.split(" ");
+		schemeName = schemeName.toUpperCase();
 		int len = nameArray.length;
 		String name0 = nameArray[0];
 		String name1 = (len > 1) ? nameArray[1] : "";
-		if(name0.matches("\\w+-\\w+")) {
-			nameArray[0] = name0.replaceAll("-", " ");
-//			nameArray = String.join(" ", Arrays.copyOfRange(nameArray, 0, len)).split(" ");
-			schemeName = String.join(" ", Arrays.copyOfRange(nameArray, 0, len));
+//		if(name0.matches("\\w+-\\w+")) {
+//			nameArray[0] = name0.replaceAll("-", " ");
+////			nameArray = String.join(" ", Arrays.copyOfRange(nameArray, 0, len)).split(" ");
+//			schemeName = String.join(" ", Arrays.copyOfRange(nameArray, 0, len));
+////			System.out.println("schemeName="+schemeName);
+//			schemeName = nameErrorFix(schemeName);
 //			System.out.println("schemeName="+schemeName);
-			nameErrorFix(schemeName);
-//			name0 = name0.split("-")[0];
-//			name1 = String.join(" ", Arrays.copyOfRange(nameArray, 0, );
-		}
+////			name0 = name0.split("-")[0];
+////			name1 = String.join(" ", Arrays.copyOfRange(nameArray, 0, );
+//		}
 		name0 = nameArray[0];
 		name1 = (len > 1) ? nameArray[1] : "";
-//		if(name0.equalsIgnoreCase("Birla"))
-//			return "Aditya";
-		if(name0.contains("Benchmark"))
-			return "Benchmark";
+		if(name0.toUpperCase().contains("SUNDARAM"))
+			return "Sundaram";
 		if(name0.equalsIgnoreCase("rincipal"))
 			return "Principal";
 		if(name0.equalsIgnoreCase("DSP  "))
@@ -114,10 +120,17 @@ public class SchemeFilter {
 			return "DWS";
 		if(name0.equalsIgnoreCase("NIPPON"))
 			return "Nippon";
+		if(name0.equalsIgnoreCase("CANARA"))
+			return "Canara";
+		if(name0.equalsIgnoreCase("SAHARATAX"))
+			return "Sahara";
+		if(name0.equalsIgnoreCase("BOIAXAEQUITY"))
+			return "BOI Axa";
 		if(name0.equalsIgnoreCase("REDEEMED"))
 			return name1;
 		if(name0.equalsIgnoreCase("Shariah"))
 			return "Benchmark";
+		
 		if(name0.contains("UTI"))
 			return "UTI";
 		if(name0.contains("HDF"))
@@ -126,31 +139,55 @@ public class SchemeFilter {
 			return "Aditya";
 		if(name0.contains("OLD"))
 			return "SBI";
+		if(name0.contains("BOB"))
+			return "Baroda";
 		if(name0.contains("DFC"))
 			return "IDFC";
 		if(name0.contains("MOF"))
 			return "Motilal Oswal";
 		if(name0.contains("TFMP"))
 			return "Tata";
-//		if(name0.contains("JM"))
-//			name0 = name0.replace("-", "");
+		if(name0.contains("Templeton"))
+			return "Franklin Templeton";
+		if(name0.contains("Franklin"))
+			return "Franklin Templeton";
+		if(name0.contains("DBS"))
+			return "DBS Chola";
+		if(name0.contains("Mirae"))
+			return "Mirae Asset";
+		if(name0.contains("Benchmark"))
+			return "Benchmark";
+		if(name0.contains("-"))
+			name0 = name0.split("-")[0];
 		
-		if(name0.equalsIgnoreCase("Baroda") && name1.equalsIgnoreCase("Pioneer"))
-			return "Baroda2";
-		if(name0.equalsIgnoreCase("Baroda") && name1.equalsIgnoreCase("BNP"))
-			return "Baroda3";
+		if(schemeName.contains("Index") && schemeName.contains("Benchmark") || 
+			schemeName.contains("Nifty") && schemeName.contains("Benchmark") ||
+			schemeName.contains("Liquid") && schemeName.contains("Benchmark"))
+			return "Benchmark";
+		if(schemeName.contains("Aditya") || schemeName.contains("Birla"))
+			return "Aditya Birla Sun Life";
+		if(schemeName.contains("Baroda"))
+			return "Baroda BNP Paribas";
+			
+//		if(name0.equalsIgnoreCase("Baroda") && name1.equalsIgnoreCase("Pioneer"))
+//			return "Baroda2";
+//		if(name0.equalsIgnoreCase("Baroda") && name1.equalsIgnoreCase("BNP"))
+//			return "Baroda3";
 		if(name0.equalsIgnoreCase("Principal") && name1.equalsIgnoreCase("PNB"))
 			return "Principal2";
 		if(name0.equalsIgnoreCase("DSP") && name1.equalsIgnoreCase("BlackRock"))
 			return "DSP2";
 		if(name0.equalsIgnoreCase("Mahindra") && name1.equalsIgnoreCase("Manulife"))
 			return "Mahindra2";
-		if(name0.equalsIgnoreCase("Templeton") && name1.equalsIgnoreCase("Templeton"))
-			return "Templeton2";
-		if(name0.equalsIgnoreCase("Birla") && !name1.equalsIgnoreCase("Sun"))
-			return "Birla Sun Life";
-		if(name0.equalsIgnoreCase("Motilal") && name1.equals("OSwal"))
-			name1 = "Oswal";
+//		if(name0.equalsIgnoreCase("Templeton") && name1.equalsIgnoreCase("Templeton"))
+//			return "Templeton2";
+//		if(
+////				name0.equalsIgnoreCase("Birla") && name1.equalsIgnoreCase("Sun") ||
+////				name0.equalsIgnoreCase("Aditya") && name1.equalsIgnoreCase("Birla") ||
+//				schemeName.contains("Aditya") || schemeName.contains("Birla"))
+//			return "Aditya Birla Sun Life";
+//		if(name0.equalsIgnoreCase("Motilal") && name1.equals("OSwal"))
+//			name1 = "Oswal";
 		
 		return name0; // .replaceAll("\\W", "");
 	}
@@ -168,7 +205,6 @@ public class SchemeFilter {
 		specialNamesMap.put("PGIM", 	2);
 		specialNamesMap.put("Invesco", 	2);
 		specialNamesMap.put("Morgan", 	2);
-		specialNamesMap.put("Franklin", 2);
 		specialNamesMap.put("DBS", 		2);
 		specialNamesMap.put("Old", 		2);
 		specialNamesMap.put("DHFL",		2);
@@ -176,16 +212,17 @@ public class SchemeFilter {
 		specialNamesMap.put("ABN", 		2);
 		
 		specialNamesMap.put("DSP2",		 2);
+//		specialNamesMap.put("Franklin2", 2);
 		specialNamesMap.put("Principal2",2);
 		specialNamesMap.put("Mahindra2", 2);
-		specialNamesMap.put("Templeton2",2);
-		specialNamesMap.put("Baroda2", 	 2);
+//		specialNamesMap.put("Templeton2",2);
+//		specialNamesMap.put("Baroda2", 	 2);
 		
-		specialNamesMap.put("Baroda3", 	3);
+//		specialNamesMap.put("Baroda3", 	3);	
 		specialNamesMap.put("Bank", 	3);
-		specialNamesMap.put("Birla3", 	3);
+//		specialNamesMap.put("Birla3", 	3);
 		
-		specialNamesMap.put("Aditya", 	4);
+//		specialNamesMap.put("Aditya", 	4);
 	}
 
 	private static List<JSONObject> parseJson(String content) {
